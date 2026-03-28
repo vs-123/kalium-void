@@ -1,4 +1,7 @@
 :em: {sp}--{sp}
+:license: GNU Affero General Public License version 3.0 or later
+:license-link: link:https://www.gnu.org/licenses/agpl-3.0.en.html[]
+:raw-url: https://raw.githubusercontent.com/vs-123/cchat/refs/heads/au
 
 = KALIUM VOID
 
@@ -99,3 +102,11 @@ umount -R /mnt
 * Poweroff, eject the ISO and boot up.
 
 * *THE END*
+
+== LICENSE
+
+This project is licensed under the *{license}*.
+
+*NO WARRANTY PROVIDED*
+
+For more information, see `LICENSE` file or visit {license-link}.
