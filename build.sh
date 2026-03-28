@@ -9,8 +9,8 @@ cd ./void-mklive
 
 rm ./data/splash.png &&
 rm ./data/issue &&
-cp ../splash.png ./void-mklive/data/ &&
-cp ../kalium-iso-overlay/etc/issue ./void-mklive/data/issue
+cp ../splash.png ./data/ &&
+cp ../kalium-iso-overlay/etc/issue ./data/issue
 
 sudo ./mklive.sh \
    -p "$(cat ../packages.txt)"  \
