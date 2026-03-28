@@ -50,6 +50,7 @@ chroot /mnt /bin/zsh <<EOF
    useradd -m -G wheel,audio,video,storage,users $NEWUSER
    echo "[SET PASSWORD FOR $NEWUSER]"
    passwd $NEWUSER < /dev/tty
+	chsh -s /bin/zsh $NEWUSER
    echo "[SET PASSWORD FOR ROOT]"
    passwd root < /dev/tty
 	echo "kalium-void" > /etc/hostname
