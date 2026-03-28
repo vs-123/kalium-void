@@ -13,30 +13,28 @@ read -p "[TARGET DISK (E.G., /DEV/SDA)] " TARGET
 read -p "[NEW USERNAME] " NEWUSER
 
 echo "=> PARTITIONING $TARGET..."
-wipefs -a "$TARGET"
-parted -s "$TARGET" mklabel gpt
-parted -s "$TARGET" mkpart ESP fat32 1MiB 1GiB
-parted -s "$TARGET" set 1 esp on
-parted -s "$TARGET" mkpart primary linux-swap 1GiB 9GiB
-parted -s "$TARGET" mkpart primary ext4 9GiB 100%
+sudo wipefs -a "$TARGET"
+sudo parted -s "$TARGET" mklabel gpt
+sudo parted -s "$TARGET" mkpart ESP fat32 1MiB 1GiB
+sudo parted -s "$TARGET" set 1 esp on
+sudo parted -s "$TARGET" mkpart primary linux-swap 1GiB 9GiB
+sudo parted -s "$TARGET" mkpart primary ext4 9GiB 100%
 
 echo "=> FORMATTING FILE SYSTEMS..."
-mkfs.vfat "${TARGET}1"
-mkswap "${TARGET}2"
-mkfs.ext4 "${TARGET}3"
+sudo mkfs.vfat "${TARGET}1"
+sudo mkswap "${TARGET}2"
+sudo mkfs.ext4 "${TARGET}3"
 
 echo "=> MOUNTING..."
-mkdir -p /mnt/
-mount "${TARGET}3" /mnt/
-mkdir -p /mnt/boot/efi
-mount "${TARGET}1" /mnt/boot/efi
-swapon "${TARGET}2"
+sudo mount --mkdir "${TARGET}3" /mnt/
+sudo mount --mkdir "${TARGET}1" /mnt/boot/efi
+sudo swapon "${TARGET}2"
 
 echo "=> CLONING KALIUM VOID. PLEASE WAIT..."
-rsync -axHAWXS --numeric-ids --info=progress2 / /mnt
+sudo rsync -axHAWXS --numeric-ids --info=progress2 / /mnt
 
 echo "=> GENERATING FSTAB..."
-xgenfstab -U /mnt > /mnt/etc/fstab
+sudo xgenfstab -U /mnt > /mnt/etc/fstab
 
 echo "=> MOUNT VIRTUAL FS..."
 for i in dev sys proc
@@ -45,8 +43,8 @@ do
 done
 
 echo "=> CONFIGURING SYSTEM..."
-cp /etc/resolv.conf /mnt/etc/
-chroot /mnt /bin/zsh <<EOF
+sudo cp /etc/resolv.conf /mnt/etc/
+sudo chroot /mnt /bin/zsh <<EOF
    useradd -m -G wheel,audio,video,storage,users $NEWUSER
 
 	echo "=> SETUP DOTS"
@@ -78,6 +76,9 @@ chroot /mnt /bin/zsh <<EOF
 EOF
 
 
-echo "#####################################################"
-echo "#  INSTALL COMPLETE. POWER OFF, EJECT ISO AND BOOT  #"
-echo "#####################################################"
+echo "#################################################"
+echo "#  INSTALL COMPLETE. POWERING OFF IN 5 SECS...  #"
+echo "#              EJECT ISO AND BOOT               #"
+echo "#################################################"
+
+sleep 5 && sudo poweroff
