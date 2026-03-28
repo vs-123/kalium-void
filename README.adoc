@@ -1,0 +1,98 @@
+:em: {sp}--{sp}
+
+= KALIUM VOID
+
+My person Void Linux spin-off
+
+== HOW TO INSTALL
+
+Assuming you've booted into the live ISO, follow these instructions.
+
+* Make disk and format and mount
+
+[source,shell]
+----
+cfdisk
+# /dev/sda1   1G  (EFI)
+# /dev/sda2   12G (swap)
+# /dev/sda3   1G  (root partition)
+
+mkfs.vfat /dev/sda1
+mkfs.ext4 /dev/sda3
+mkswap    /dev/sda2
+
+mount --mkdir /dev/sda3 /mnt
+mount --mkdir /dev/sda1 /mnt/boot/efi
+swapon /dev/sda2
+----
+
+* Instead of manually installing packages, clone the live session
+
+[source,shell]
+----
+sudo rsync -axHAWXS --numeric-ids --info=progress2 / /mnt/target
+
+# `-x` -- STAY ON ONE FILE SYSTEM (DON'T TRY TO COPY `/DEV` OR `/PROC` VIRTUAL FILES).
+
+# `-aHAWXS` -- PRESERVES EVERYTHING SUCH AS PERMISSIONS, HARD LINKS, SYMLINKS AND EXTENDED ATTRIBUTES.
+----
+
+
+* Generate fstab
+
+[source,shell]
+----
+xgenfstab -U /mnt > outputs.txt
+# open outputs.txt in an editor, copy its content 
+# and *append* it to /mnt/etc/fstab
+
+# OR
+
+xgenfstab -U /mnt >> /mnt/etc/fstab
+----
+
+* Mount these `/dev` `/sys` `/proc`
+
+[source,shell]
+----
+mount --rbind /dev /mnt/dev
+mount --rbind /sys /mnt/sys
+mount --rbind /proc /mnt/proc
+
+# OR
+
+for i in dev sys proc; do; mount --rbind /$i /mnt/$i; done
+----
+
+* `chroot` and setup stuff
+
+[source,shell]
+----
+chroot /mnt /bin/zsh
+
+# SETUP
+passwd   # SET ROOT PASSWORD
+useradd -m -G wheel,audio,video,storage,users USER_NAME   # ADD NEW USER `USER_NAME`
+passwd USER_NAME
+
+# INSTALL GRUB
+grub-install --target=arm64-efi --efi-directory=/boot/efi --bootloader-id="Kalium Void"
+
+xbps-reconfigure -fa
+
+# SANITY CHECK FOR GRUB
+ls /boot/grub/
+grep menuentry /boot/grub/grub.cfg
+----
+
+* Exit `chroot`
+
+[source,shell]
+----
+exit
+umount -R /mnt
+----
+
+* Poweroff, eject the ISO and boot up.
+
+* *THE END*
