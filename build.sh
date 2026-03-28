@@ -9,7 +9,7 @@ cd ./void-mklive
 
 rm ./data/splash.png &&
 rm ./data/issue &&
-cp ../kalium-iso-overlay/etc/skel/wp/wp.jpg ./void-mklive/data/splash.jpg &&
+cp ../splash.png ./void-mklive/data/ &&
 cp ../kalium-iso-overlay/etc/issue ./void-mklive/data/issue
 
 sudo ./mklive.sh \
