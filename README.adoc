@@ -9,7 +9,20 @@ My personal Void Linux spin-off
 
 == HOW TO INSTALL
 
-Assuming you've booted into the live ISO, follow these instructions.
+Assuming you've booted into the live ISO, you may install Kalium Void in one of two ways {em} <<installer-method,GUIDED METHOD>> or <<manual-method,MANUAL METHOD>>
+
+[[installer-method]]
+=== GUIDED METHOD
+
+An installer script `kalium-installer.sh` is provided at `/usr/local/bin/`. You may execute `kalium-installer.sh` directly as an administrator and follow the on-screen instructions.
+
+[source,shell]
+----
+sudo kalium-installer.sh
+----
+
+[[manual-method]]
+=== MANUAL METHOD
 
 * Make disk and format and mount
 

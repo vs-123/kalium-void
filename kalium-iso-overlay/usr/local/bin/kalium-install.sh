@@ -52,6 +52,7 @@ chroot /mnt /bin/zsh <<EOF
    passwd $NEWUSER < /dev/tty
    echo "[SET PASSWORD FOR ROOT]"
    passwd root < /dev/tty
+	echo "kalium-void" > /etc/hostname
    grub-install --target=arm64-efi --efi-directory=/boot/efi --bootloader-id="Kalium-Void"
    xbps-reconfigure -fa
 	echo "=> SANITY CHECK"

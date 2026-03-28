@@ -13,7 +13,8 @@ ln -sf /etc/sv/dbus "$ROOTFS/etc/runit/runsvdir/default/"
 
 echo "nameserver 1.1.1.1" > "$ROOTFS/etc/resolv.conf"
 
-echo "=> SET HOSTNAME..."
-echo "kalium-void" > "$ROOTFS/etc/hostname"
+echo "=> EXECUTABLE INSTALLER..."
+
+chmod +x "$ROOTFS/usr/local/bin/kalium-installer.sh"
 
 echo "=> KALIUM SETUP SCRIPT END"
