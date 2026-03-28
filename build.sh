@@ -10,8 +10,8 @@ cd ./void-mklive
 rm ./data/splash.png &&
 rm ./data/issue &&
 cp ../splash.png ./data/ &&
-mkdir -p ../kalium-iso-overlay/etc/usr/share/ &&
-cp ../splash.png ../kalium-iso-overlay/etc/usr/share/splash.png &&
+mkdir -p ../kalium-iso-overlay/usr/share/ &&
+cp ../splash.png ../kalium-iso-overlay/usr/share/splash.png &&
 cp ../kalium-iso-overlay/etc/issue ./data/issue
 
 sudo ./mklive.sh \

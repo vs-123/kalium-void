@@ -56,11 +56,17 @@ chroot /mnt /bin/zsh <<EOF
 	echo "kalium-void" > /etc/hostname
    grub-install --target=arm64-efi --efi-directory=/boot/efi --bootloader-id="Kalium-Void"
    xbps-reconfigure -fa
+
 	echo "=> SANITY CHECK"
 	ls /boot/grub/
 	grep menuentry /boot/grub/grub.cfg
    echo 'GRUB_BACKGROUND="/boot/grub/splash.png"' >> /etc/default/grub
+
+	echo "=> SPLASH IMAGE"
    cp /usr/share/splash.png /boot/grub/splash.png
+
+	echo "=> SUDO"
+   echo "$NEWUSER ALL=(ALL:ALL) ALL" >> /etc/sudoers
 EOF
 
 
