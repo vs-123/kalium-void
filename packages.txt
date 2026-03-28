@@ -15,6 +15,7 @@ mesa
 mesa-dri
 neovim
 openbox
+parted
 picom
 rofi
 rsync

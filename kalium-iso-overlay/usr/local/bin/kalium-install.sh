@@ -33,19 +33,25 @@ mount "${TARGET}1" /mnt/boot/efi
 swapon "${TARGET}2"
 
 echo "=> CLONING KALIUM VOID. PLEASE WAIT..."
-rsync -axHAWXS --numeric-ids --info=progress2 / /mnt/
+rsync -axHAWXS --numeric-ids --info=progress2 / /mnt
 
 echo "=> GENERATING FSTAB..."
 xgenfstab -U /mnt > /mnt/etc/fstab
 
+echo "=> MOUNT VIRTUAL FS..."
+for i in dev sys proc
+do
+   mount --rbind /$i /mnt/$i
+done
+
 echo "=> CONFIGURING SYSTEM..."
 cp /etc/resolv.conf /mnt/etc/
-xbps-uchroot /mnt /bin/zsh <<EOF
+chroot /mnt /bin/zsh <<EOF
    useradd -m -G wheel,audio,video,storage,users $NEWUSER
    echo "[SET PASSWORD FOR $NEWUSER]"
-   passwd $NEWUSER
+   passwd $NEWUSER < /dev/tty
    echo "[SET PASSWORD FOR ROOT]"
-   passwd root
+   passwd root < /dev/tty
    grub-install --target=arm64-efi --efi-directory=/boot/efi --bootloader-id="Kalium-Void"
    xbps-reconfigure -fa
 	echo "=> SANITY CHECK"
