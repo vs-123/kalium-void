@@ -5,7 +5,7 @@
 
 = KALIUM VOID
 
-My person Void Linux spin-off
+My personal Void Linux spin-off
 
 == HOW TO INSTALL
 
