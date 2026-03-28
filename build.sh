@@ -5,6 +5,11 @@ then
 	git clone --depth 1 https://github.com/void-linux/void-mklive.git
 fi
 
+rm ./void-mklive/data/splash.png && \
+rm ./void-mklive/data/issue && \
+cp ./kalium-iso-overlay/etc/skel/wp/wp.jpg ./void-mklive/data/splash.jpg && \ 
+cp ./kalium-iso-overlay/etc/issue ./void-mklive/data/issue
+
 sudo ./void-mklive/mklive.sh \
    -p "$(cat ./packages.txt)"  \
    -S "acpid dhcpcd sshd"  \
