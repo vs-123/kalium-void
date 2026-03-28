@@ -47,6 +47,7 @@ alias ex='em ~/.xinitrc'
 alias ez='em ~/.zshrc'
 
 alias cm='chezmoi'
+alias cmia='cm init --apply'
 alias cma='cm add'
 alias cmae='cm add --encrypt'
 alias cmap='cm apply'

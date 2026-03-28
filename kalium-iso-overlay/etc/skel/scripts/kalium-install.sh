@@ -48,11 +48,19 @@ echo "=> CONFIGURING SYSTEM..."
 cp /etc/resolv.conf /mnt/etc/
 chroot /mnt /bin/zsh <<EOF
    useradd -m -G wheel,audio,video,storage,users $NEWUSER
+
+	echo "=> SETUP DOTS"
+   su $NEWUSER
+   chezmoi init --apply vs-123
+   exit
+
+   cp /usr/share/splash.png /boot/grub/splash.png
    echo "[SET PASSWORD FOR $NEWUSER]"
    passwd $NEWUSER < /dev/tty
 	chsh -s /bin/zsh $NEWUSER
    echo "[SET PASSWORD FOR ROOT]"
    passwd root < /dev/tty
+
 	echo "kalium-void" > /etc/hostname
    grub-install --target=arm64-efi --efi-directory=/boot/efi --bootloader-id="Kalium-Void"
    xbps-reconfigure -fa
