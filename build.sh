@@ -5,19 +5,21 @@ then
 	git clone --depth 1 https://github.com/void-linux/void-mklive.git
 fi
 
-rm ./void-mklive/data/splash.png && \
-rm ./void-mklive/data/issue && \
-cp ./kalium-iso-overlay/etc/skel/wp/wp.jpg ./void-mklive/data/splash.jpg && \ 
-cp ./kalium-iso-overlay/etc/issue ./void-mklive/data/issue
+cd ./void-mklive 
 
-sudo ./void-mklive/mklive.sh \
-   -p "$(cat ./packages.txt)"  \
+rm ./data/splash.png &&
+rm ./data/issue &&
+cp ../kalium-iso-overlay/etc/skel/wp/wp.jpg ./void-mklive/data/splash.jpg &&
+cp ../kalium-iso-overlay/etc/issue ./void-mklive/data/issue
+
+sudo ./mklive.sh \
+   -p "$(cat ../packages.txt)"  \
    -S "acpid dhcpcd sshd"  \
-   -I ./kalium-iso-overlay \
-   -x ./finish_kalium_void.sh  \
+   -I ../kalium-iso-overlay \
+   -x ../finish_kalium_void.sh  \
    -T "Kalium Void" \
    -e /bin/zsh \
-   -o kalium-void.iso
+   -o ../kalium-void.iso
 
 #   Usage: mklive.sh [options]
 #   
