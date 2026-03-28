@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openbox_menu xmlns="http://openbox.org/3.4/menu">
+
+<menu id="apps-editors-menu" label="Text Editors">
+  <item label="Neovim">
+    <action name="Execute">
+      <command>nvim</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+        <wmclass>Neovim</wmclass>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="apps-term-menu" label="Terminal Emulators">
+  <item label="Kitty">
+    <action name="Execute">
+      <command>kitty</command>
+    </action>
+  </item>
+</menu>
+
+<menu id="apps-net-menu" label="Web Browsers">
+  <item label="Firefox">
+    <action name="Execute">
+      <command>firefox</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+        <wmclass>Firefox</wmclass>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="system-menu" label="System">
+  <item label="Manage Cups Printers">
+    <action name="Execute">
+      <command>xdg-open http://localhost:631/</command>
+      <startupnotify>
+        <enabled>no</enabled>
+        <icon>cups</icon>
+      </startupnotify>
+    </action>
+  </item>
+  <separator />
+  <item label="Reload Openbox">
+    <action name="Reconfigure" />
+  </item>
+</menu>
+
+<menu id="root-menu" label="Openbox Root Menu">
+  <separator label="Menu" />
+  <menu id="apps-accessories-menu"/>
+  <menu id="apps-editors-menu"/>
+  <menu id="apps-graphics-menu"/>
+  <menu id="apps-net-menu"/>
+  <menu id="apps-office-menu"/>
+  <menu id="apps-multimedia-menu"/>
+  <menu id="apps-term-menu"/>
+  <menu id="apps-fileman-menu"/>
+  <menu id="system-menu"/>
+  <separator />
+  <item label="Exit">
+    <action name="Exit">
+      <prompt>no</prompt>
+    </action>
+  </item>
+</menu>
+</openbox_menu>

@@ -1,0 +1,59 @@
+[user]
+	email = 
+	name = VS-123
+
+[core]
+   pager = 
+
+[url "ssh://git@github.com/"]
+	pushInsteadOf = https://github.com/
+
+[diff]
+   tool = nvimdiff
+
+[difftool "nvimdiff"]
+   cmd = nvim -d "$LOCAL" "$REMOTE"
+
+[alias]
+   a = add
+   aa = add -A
+   b = branch
+   bm = branch -M
+   bd = branch -D
+   c = commit
+   ca = commit --all
+   cam = commit --all -m
+   cfg = config
+   ch = checkout
+   cl = clone
+   cld = clone --depth 1
+   clr = clone --recurse
+   cldr = clone --depth 1 --recurse
+   clrd = clone --depth 1 --recurse
+   d = diff
+   dh = diff head   
+   do = diff origin
+   dt = difftool -y
+   dto = difftool -y origin
+   f = fetch
+   gcfg = config --global
+   l = log --reverse
+   lr = log 
+   pl = pull
+   plr = pull --rebase
+   ps = push
+   psu = push -u
+   psf = push -f
+   rb = rebase 
+   rba = rebase --abort
+   rbc = rebase --continue
+   rbi = rebase -i --committer-date-is-author-date
+   rbir = rebase -i --root --committer-date-is-author-date
+   rem = remote
+   rema = remote add
+   remr = remote remove
+   rmc = rm --cache
+   rs = reset
+   rsh = reset --hard
+   st = status
+   sw = switch
