@@ -33,7 +33,7 @@ swapon /dev/sda2
 
 [source,shell]
 ----
-sudo rsync -axHAWXS --numeric-ids --info=progress2 / /mnt/target
+sudo rsync -axHAWXS --numeric-ids --info=progress2 / /mnt
 
 # `-x` -- STAY ON ONE FILE SYSTEM 
 #         (DON'T TRY TO COPY `/DEV` OR `/PROC` VIRTUAL FILES).
