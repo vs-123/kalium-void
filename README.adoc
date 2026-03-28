@@ -14,11 +14,11 @@ Assuming you've booted into the live ISO, you may install Kalium Void in one of 
 [[installer-method]]
 === GUIDED METHOD
 
-An installer script `kalium-installer.sh` is provided at `/usr/local/bin/`. You may execute `kalium-installer.sh` directly as an administrator and follow the on-screen instructions.
+An installer script `kalium-installer.sh` is provided at `~/scripts/kalium-installer.sh`. You may execute `kalium-installer.sh` directly as an administrator and follow the on-screen instructions.
 
 [source,shell]
 ----
-sudo kalium-installer.sh
+sudo ~/scripts/kalium-installer.sh
 ----
 
 [[manual-method]]
