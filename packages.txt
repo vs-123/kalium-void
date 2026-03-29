@@ -6,7 +6,7 @@ dbus
 dejavu-fonts-ttf
 fastfetch
 feh
-firefox
+librewolf
 flameshot
 git
 gnupg

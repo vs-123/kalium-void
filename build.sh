@@ -14,13 +14,15 @@ mkdir -p ../kalium-iso-overlay/usr/share/ &&
 cp ../splash.png ../kalium-iso-overlay/usr/share/splash.png &&
 cp ../kalium-iso-overlay/etc/issue ./data/issue
 
-sudo ./mklive.sh \
+yes | sudo ./mklive.sh \
    -p "$(cat ../packages.txt)"  \
    -S "acpid dhcpcd sshd"  \
    -I ../kalium-iso-overlay \
    -x ../finish_kalium_void.sh  \
    -T "Kalium Void" \
    -e /bin/zsh \
+   -e /bin/zsh \
+   -r "https://github.com/index-0/librewolf-void/releases/latest/download/" \
    -o ../kalium-void.iso
 
 #   Usage: mklive.sh [options]
