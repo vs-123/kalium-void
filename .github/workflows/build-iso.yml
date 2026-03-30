@@ -13,7 +13,7 @@ jobs:
       - name: CHECKOUT KALIUM REPO
         uses: actions/checkout@v4
 
-      - name: INSTALL DEPENDENCIES
+      - name: INSTALL DEPENDENCIES & SETUP XBPS
         run: |
           sudo apt-get update
           sudo apt-get install -y qemu-user-static binfmt-support wget liblz4-tool xz-utils
