@@ -31,6 +31,7 @@ jobs:
       - name: BUILD ISO (AARCH64)
         working-directory: .
         run: |
+          sed -i 's/umount -R -f/umount -l -R -f/g' mklive.sh
           bash ./build.sh aarch64
 
       - name: GENERATE CHECKSUM & RENAME
