@@ -42,6 +42,8 @@ jobs:
           mkdir -p ../kalium-iso-overlay/usr/share/ &&
           cp ../splash.png ../kalium-iso-overlay/usr/share/splash.png &&
           cp ../kalium-iso-overlay/etc/issue ./data/issue
+
+          sed -i 's/umount -R -f/umount -l -R -f/g' mklive.sh
           
           yes | sudo ./mklive.sh \
                -a aarch64 \
