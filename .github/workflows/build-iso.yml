@@ -1,0 +1,62 @@
+name: BUILD KALIUM VOID ISO
+
+on:
+	push:
+		tags:
+			- '*' 
+workflow_dispatch: 
+
+jobs:
+	build:
+		runs-on: ubuntu-latest
+	steps:
+		- name: CHECKOUT KALIUM REPO
+		  uses: actions/checkout@v4
+
+		- name: INSTALL DEPENDENCIES
+		  run: |
+			  sudo apt-get update
+			  sudo apt-get install -y qemu-user-static binfmt-support wget liblz4-tool xz-utils
+
+		- name: CLONE VOID-MKLIVE
+		  run: git clone --depth 1 https://github.com/void-linux/void-mklive.git
+
+		- name: BUILD ISO (AARCH64)
+		  working-directory: .
+		  run: |
+			if [ ! -d "void-mklive" ]
+			then
+				git clone --depth 1 https://github.com/void-linux/void-mklive.git
+			fi
+			
+			cd ./void-mklive 
+			
+			rm ./data/splash.png &&
+			rm ./data/issue &&
+			cp ../splash.png ./data/ &&
+			mkdir -p ../kalium-iso-overlay/usr/share/ &&
+			cp ../splash.png ../kalium-iso-overlay/usr/share/splash.png &&
+			cp ../kalium-iso-overlay/etc/issue ./data/issue
+			
+			yes | sudo ./mklive.sh \
+			   -p "$(cat ../packages.txt)"  \
+			   -S "acpid dhcpcd sshd"  \
+			   -I ../kalium-iso-overlay \
+			   -x ../finish_kalium_void.sh  \
+			   -T "Kalium Void" \
+			   -e /bin/zsh \
+			   -e /bin/zsh \
+			   -r "https://github.com/index-0/librewolf-void/releases/latest/download/" \
+			   -o ../kalium-void-aarch64.iso
+
+		- name: GENERATE CHECKSUM
+		  run: sha256sum kalium-void-aarch64.iso > sha256sum.txt
+
+		- name: CREATE RELEASE AND UPLOAD ASSET
+		  uses: softprops/action-gh-release@v2
+		  with:
+			  files: |
+				  kalium-void-aarch64.iso
+				  sha256sum.txt
+		  env:
+			  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
