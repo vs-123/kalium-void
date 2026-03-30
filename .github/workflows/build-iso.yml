@@ -3,7 +3,7 @@ name: BUILD KALIUM VOID ISO
 on:
   push:
     tags:
-      - '*' 
+      - 'v*' 
   workflow_dispatch: 
 
 jobs:
@@ -24,30 +24,30 @@ jobs:
     - name: BUILD ISO (AARCH64)
       working-directory: .
       run: |
-      if [ ! -d "void-mklive" ]
-      then
-        git clone --depth 1 https://github.com/void-linux/void-mklive.git
-      fi
-      
-      cd ./void-mklive 
-      
-      rm ./data/splash.png &&
-      rm ./data/issue &&
-      cp ../splash.png ./data/ &&
-      mkdir -p ../kalium-iso-overlay/usr/share/ &&
-      cp ../splash.png ../kalium-iso-overlay/usr/share/splash.png &&
-      cp ../kalium-iso-overlay/etc/issue ./data/issue
-      
-      yes | sudo ./mklive.sh \
-        -p "$(cat ../packages.txt)"  \
-        -S "acpid dhcpcd sshd"  \
-        -I ../kalium-iso-overlay \
-        -x ../finish_kalium_void.sh  \
-        -T "Kalium Void" \
-        -e /bin/zsh \
-        -e /bin/zsh \
-        -r "https://github.com/index-0/librewolf-void/releases/latest/download/" \
-        -o ../kalium-void-aarch64.iso
+        if [ ! -d "void-mklive" ]
+        then
+          git clone --depth 1 https://github.com/void-linux/void-mklive.git
+        fi
+        
+        cd ./void-mklive 
+        
+        rm ./data/splash.png &&
+        rm ./data/issue &&
+        cp ../splash.png ./data/ &&
+        mkdir -p ../kalium-iso-overlay/usr/share/ &&
+        cp ../splash.png ../kalium-iso-overlay/usr/share/splash.png &&
+        cp ../kalium-iso-overlay/etc/issue ./data/issue
+        
+        yes | sudo ./mklive.sh \
+          -p "$(cat ../packages.txt)"  \
+          -S "acpid dhcpcd sshd"  \
+          -I ../kalium-iso-overlay \
+          -x ../finish_kalium_void.sh  \
+          -T "Kalium Void" \
+          -e /bin/zsh \
+          -e /bin/zsh \
+          -r "https://github.com/index-0/librewolf-void/releases/latest/download/" \
+          -o ../kalium-void-aarch64.iso
 
     - name: GENERATE CHECKSUM
       run: sha256sum kalium-void-aarch64.iso > sha256sum.txt
