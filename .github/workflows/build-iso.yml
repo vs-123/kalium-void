@@ -3,8 +3,8 @@ name: BUILD KALIUM VOID ISO
 on:
   push:
     tags:
-      - 'v*' 
-  workflow_dispatch: 
+      - 'v*'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -46,7 +46,7 @@ jobs:
           cp ../kalium-iso-overlay/etc/issue ./data/issue
           
           yes | sudo ./mklive.sh \
-     	      -a aarch64 \
+               -a aarch64 \
             -p "$(cat ../packages.txt)"  \
             -S "acpid dhcpcd sshd"  \
             -I ../kalium-iso-overlay \
