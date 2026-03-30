@@ -18,6 +18,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y qemu-user-static binfmt-support wget liblz4-tool xz-utils
 
+          wget https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
+          mkdir xbps
+          tar xvf xbps-static-latest.x86_64-musl.tar.xz -C xbps
+          sudo cp xbps/usr/bin/xbps-* /usr/bin/
+
+          sudo update-binfmts --enable qemu-aarch64
+
       - name: CLONE VOID-MKLIVE
         run: git clone --depth 1 https://github.com/void-linux/void-mklive.git
 
@@ -39,6 +46,7 @@ jobs:
           cp ../kalium-iso-overlay/etc/issue ./data/issue
           
           yes | sudo ./mklive.sh \
+     	      -a aarch64 \
             -p "$(cat ../packages.txt)"  \
             -S "acpid dhcpcd sshd"  \
             -I ../kalium-iso-overlay \
