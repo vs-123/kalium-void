@@ -23,8 +23,6 @@ jobs:
           tar xvf xbps-static-latest.aarch64-musl.tar.xz -C xbps
           sudo cp xbps/usr/bin/xbps-* /usr/bin/
 
-          sudo update-binfmts --enable qemu-aarch64
-
       - name: CLONE VOID-MKLIVE
         run: git clone --depth 1 https://github.com/void-linux/void-mklive.git
 
