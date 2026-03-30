@@ -18,9 +18,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y qemu-user-static binfmt-support wget liblz4-tool xz-utils
 
-          wget https://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz
+          wget https://repo-default.voidlinux.org/static/xbps-static-latest.aarch64-musl.tar.xz
           mkdir xbps
-          tar xvf xbps-static-latest.x86_64-musl.tar.xz -C xbps
+          tar xvf xbps-static-latest.aarch64-musl.tar.xz -C xbps
           sudo cp xbps/usr/bin/xbps-* /usr/bin/
 
           sudo update-binfmts --enable qemu-aarch64
