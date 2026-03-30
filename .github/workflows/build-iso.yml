@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-aarch64:
     runs-on: ubuntu-24.04-arm
     permissions:
       contents: write
@@ -31,42 +31,19 @@ jobs:
       - name: BUILD ISO (AARCH64)
         working-directory: .
         run: |
-          if [ ! -d "void-mklive" ]
-          then
-            git clone --depth 1 https://github.com/void-linux/void-mklive.git
-          fi
-          
-          cd ./void-mklive 
-          
-          rm ./data/splash.png &&
-          rm ./data/issue &&
-          cp ../splash.png ./data/ &&
-          mkdir -p ../kalium-iso-overlay/usr/share/ &&
-          cp ../splash.png ../kalium-iso-overlay/usr/share/splash.png &&
-          cp ../kalium-iso-overlay/etc/issue ./data/issue
+          bash ./build.sh aarch64
 
-          sed -i 's/umount -R -f/umount -l -R -f/g' mklive.sh
-          
-          yes | sudo ./mklive.sh \
-               -a aarch64 \
-            -p "$(cat ../packages.txt)"  \
-            -S "acpid dhcpcd sshd"  \
-            -I ../kalium-iso-overlay \
-            -x ../finish_kalium_void.sh  \
-            -T "Kalium Void" \
-            -e /bin/zsh \
-            -e /bin/zsh \
-            -r "https://github.com/index-0/librewolf-void/releases/latest/download/" \
-            -o ../kalium-void-aarch64.iso
-
-      - name: GENERATE CHECKSUM
-        run: sha256sum kalium-void-aarch64.iso > sha256sum.txt
+      - name: GENERATE CHECKSUM & RENAME
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          sha256sum kalium-void-aarch64.iso > kalium-void-aarch64-sha256sum.txt
+			 mv kalium-void-aarch64.iso "kalium-void-aarch64-${TAG_NAME}.iso"
 
       - name: CREATE RELEASE AND UPLOAD ASSET
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            kalium-void-aarch64.iso
-            sha256sum.txt
+            kalium-void-aarch64*.iso
+            *sha256sum.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

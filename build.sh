@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ -z "$1" ]; then
+	echo "Usage: $0 <architecture> (e.g., x86_64 or aarch64)"
+	exit 1
+fi
+
+ARCH=$1
+
 if [ ! -d "void-mklive" ]
 then
 	git clone --depth 1 https://github.com/void-linux/void-mklive.git
@@ -8,22 +15,23 @@ fi
 cd ./void-mklive 
 
 rm ./data/splash.png &&
-rm ./data/issue &&
-cp ../splash.png ./data/ &&
-mkdir -p ../kalium-iso-overlay/usr/share/ &&
-cp ../splash.png ../kalium-iso-overlay/usr/share/splash.png &&
-cp ../kalium-iso-overlay/etc/issue ./data/issue
+	rm ./data/issue &&
+	cp ../splash.png ./data/ &&
+	mkdir -p ../kalium-iso-overlay/usr/share/ &&
+	cp ../splash.png ../kalium-iso-overlay/usr/share/splash.png &&
+	cp ../kalium-iso-overlay/etc/issue ./data/issue
 
 yes | sudo ./mklive.sh \
-   -p "$(cat ../packages.txt)"  \
-   -S "acpid dhcpcd sshd"  \
-   -I ../kalium-iso-overlay \
-   -x ../finish_kalium_void.sh  \
-   -T "Kalium Void" \
-   -e /bin/zsh \
-   -e /bin/zsh \
-   -r "https://github.com/index-0/librewolf-void/releases/latest/download/" \
-   -o ../kalium-void.iso
+	-a $ARCH \
+	-p "$(cat ../packages.txt)"  \
+	-S "acpid dhcpcd sshd"  \
+	-I ../kalium-iso-overlay \
+	-x ../finish_kalium_void.sh  \
+	-T "Kalium Void" \
+	-e /bin/zsh \
+	-e /bin/zsh \
+	-r "https://github.com/index-0/librewolf-void/releases/latest/download/" \
+	-o "../kalium-void-$ARCH.iso"
 
 #   Usage: mklive.sh [options]
 #   
