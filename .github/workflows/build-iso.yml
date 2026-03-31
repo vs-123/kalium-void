@@ -43,7 +43,7 @@ jobs:
             /bin/bash -c "
               chown -R void:void .
               
-              su void -c '
+              su void -s /bin/sh -c '
                 ./xbps-src binary-bootstrap &&
                 ./xbps-src pkg kalium-base-files &&
                 ./xbps-src pkg kalium-base-systems &&
