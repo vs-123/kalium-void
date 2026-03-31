@@ -36,16 +36,20 @@ jobs:
       - name: BUILD CUSTOM PACKAGES
         working-directory: kalium-repo
         run: |
-          mkdir -p etc
-          echo "XBPS_CHROOT_CMD=ethereal" >> etc/conf
-          echo "XBPS_ALLOW_CHROOT_BREAKOUT=yes" >> etc/conf
-
-          ln -s / masterdir
-          
-          ./xbps-src binary-bootstrap
-          ./xbps-src pkg kalium-base-files
-          ./xbps-src pkg kalium-base-systems
-          xbps-rindex -a hostdir/binpkgs/*.xbps
+          docker run --privileged --rm \
+            -v $(pwd):/home/void/project \
+            -w /home/void/project/kalium-repo \
+            ghcr.io/void-linux/void-linux:latest-full-aarch64 \
+            /bin/bash -c "
+              chown -R void:void .
+              
+              su void -c '
+                ./xbps-src binary-bootstrap &&
+                ./xbps-src pkg kalium-base-files &&
+                ./xbps-src pkg kalium-base-systems &&
+                xbps-rindex -a hostdir/binpkgs/*.xbps
+              '
+            "
 
       - name: CLONE VOID-MKLIVE
         run: git clone --depth 1 https://github.com/void-linux/void-mklive.git
