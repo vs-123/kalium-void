@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: INSTALL HOST DEPENDENCIES
         run: |
-          xbps-install -Sy git base-devel liblz4-progs xz qemu-user-static-binfmt
+          xbps-install -Sy git base-devel liblz4 xz qemu-user-static
 
       - name: CHECKOUT REPOS
         run: |
