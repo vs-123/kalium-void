@@ -37,9 +37,9 @@ jobs:
         working-directory: kalium-repo
         run: |
           sudo sysctl -w kernel.unprivileged_userns_clone=1
-          ./xbps-src binary-bootstrap
-          ./xbps-src pkg kalium-base-files
-          ./xbps-src pkg kalium-base-systems
+          unshare -rn ./xbps-src binary-bootstrap
+          unshare -rn ./xbps-src pkg kalium-base-files
+          unshare -rn ./xbps-src pkg kalium-base-systems
           xbps-rindex -a hostdir/binpkgs/*.xbps
 
       - name: CLONE VOID-MKLIVE
