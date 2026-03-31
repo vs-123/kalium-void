@@ -4,13 +4,41 @@
 #  KALIUM VOID INSTALLER  #
 ###########################
 
-set -e
+set -euo pipefail
 
-echo "###########################"
-echo "#  KALIUM VOID INSTALLER  #"
-echo "###########################"
-read -p "[TARGET DISK (E.G., /DEV/SDA)] " TARGET
-read -p "[NEW USERNAME] " NEWUSER
+clear
+echo "================================================="
+echo "          KALIUM VOID INSTALLER (ARM64)          "
+echo "================================================="
+
+lsblk -dno NAME,SIZE,MODEL | awk '{print "/dev/"$1 " - " $2 " - " $3}'
+echo "-------------------------------------------------"
+
+read -p "[TARGET DISK (e.g., /dev/sda)]: " TARGET
+if [[ ! -b "$TARGET" ]]; then
+    echo "[ERROR] $TARGET is not a block device."
+    exit 1
+fi
+
+read -p "[NEW USERNAME]: " NEWUSER
+if [[ -z "$NEWUSER" ]]; then
+    echo "Error: Username cannot be empty."
+    exit 1
+fi
+
+echo "!!! WARNING: ALL DATA ON $TARGET WILL BE DELETED !!!"
+read -p "Are you absolutely sure? (y/N): " CONFIRM
+if [[ $CONFIRM != "y" ]]; then
+    echo "Aborting."
+    exit 1
+fi
+
+P_PREFIX=""
+[[ "$TARGET" == *nvme* || "$TARGET" == *mmcblk* ]] && P_PREFIX="p"
+
+BOOT_P="${TARGET}${P_PREFIX}1"
+SWAP_P="${TARGET}${P_PREFIX}2"
+ROOT_P="${TARGET}${P_PREFIX}3"
 
 echo "=> PARTITIONING $TARGET..."
 sudo wipefs -a "$TARGET"
@@ -21,64 +49,62 @@ sudo parted -s "$TARGET" mkpart primary linux-swap 1GiB 9GiB
 sudo parted -s "$TARGET" mkpart primary ext4 9GiB 100%
 
 echo "=> FORMATTING FILE SYSTEMS..."
-sudo mkfs.vfat "${TARGET}1"
-sudo mkswap "${TARGET}2"
-sudo mkfs.ext4 "${TARGET}3"
+sudo mkfs.vfat "$BOOT_P"
+sudo mkswap "$SWAP_P"
+sudo mkfs.ext4 "$ROOT_P"
 
 echo "=> MOUNTING..."
-sudo mount --mkdir "${TARGET}3" /mnt/
-sudo mount --mkdir "${TARGET}1" /mnt/boot/efi
-sudo swapon "${TARGET}2"
+sudo mount --mkdir "$ROOT_P" /mnt/
+sudo mount --mkdir "$BOOT_P" /mnt/boot/efi
+sudo swapon "$SWAP_P"
 
-echo "=> CLONING KALIUM VOID. PLEASE WAIT..."
-sudo rsync -axHAWXS --numeric-ids --info=progress2 / /mnt
+echo "=> CLONING SYSTEM. THIS MAY TAKE A WHILE..."
+sudo rsync -axHAWXS --numeric-ids --info=progress2 --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} / /mnt/
 
 echo "=> GENERATING FSTAB..."
 sudo xgenfstab -U /mnt > /mnt/etc/fstab
 
-echo "=> MOUNT VIRTUAL FS..."
-for i in dev sys proc
-do
-   mount --rbind /$i /mnt/$i
+echo "=> PREPARING CHROOT..."
+for i in dev sys proc run; do
+    sudo mount --rbind /$i /mnt/$i
 done
 
-echo "=> CONFIGURING SYSTEM..."
 sudo cp /etc/resolv.conf /mnt/etc/
+
+echo "=> ENTERING SYSTEM CONFIGURATION..."
 sudo chroot /mnt /bin/zsh <<EOF
-   useradd -m -G wheel,audio,video,storage,users $NEWUSER
+    set -e
+    
+    if ! id "$NEWUSER" &>/dev/null; then
+        useradd -m -G wheel,audio,video,storage,users -s /bin/zsh "$NEWUSER"
+    fi
 
-	echo "=> SETUP DOTS"
-   su $NEWUSER
-   chezmoi init --apply vs-123
-   exit
+    echo "=> SETTING UP DOTFILES FOR $NEWUSER..."
+    sudo -u "$NEWUSER" chezmoi init --apply vs-123
 
-   cp /usr/share/splash.png /boot/grub/splash.png
-   echo "[SET PASSWORD FOR $NEWUSER]"
-   passwd $NEWUSER < /dev/tty
-	chsh -s /bin/zsh $NEWUSER
-   echo "[SET PASSWORD FOR ROOT]"
-   passwd root < /dev/tty
+    echo "=> CONFIGURING GRUB & SPLASH..."
+    cp /usr/share/splash.png /boot/grub/splash.png 2>/dev/null || true
+    echo 'GRUB_BACKGROUND="/boot/grub/splash.png"' >> /etc/default/grub
 
-	echo "kalium-void" > /etc/hostname
-   grub-install --target=arm64-efi --efi-directory=/boot/efi --bootloader-id="Kalium-Void"
-   xbps-reconfigure -fa
+    echo "=> SET PASSWORDS"
+    echo "ENTER PASSWORD FOR $NEWUSER: "
+    passwd "$NEWUSER"
+    echo "ENTER PASSWORD FOR ROOT: "
+    passwd root
 
-	echo "=> SANITY CHECK"
-	ls /boot/grub/
-	grep menuentry /boot/grub/grub.cfg
-   echo 'GRUB_BACKGROUND="/boot/grub/splash.png"' >> /etc/default/grub
+    echo "kalium-void" > /etc/hostname
+    
+    echo "=> RECONFIGURING PACKAGES..."
+    grub-install --target=arm64-efi --efi-directory=/boot/efi --bootloader-id="Kalium-Void" --recheck
+    xbps-reconfigure -fa
 
-	echo "=> SPLASH IMAGE"
-   cp /usr/share/splash.png /boot/grub/splash.png
-
-	echo "=> SUDO"
-   echo "$NEWUSER ALL=(ALL:ALL) ALL" >> /etc/sudoers
+    echo "=> FINALISING SUDOERS..."
+    echo "$NEWUSER ALL=(ALL:ALL) ALL" > "/etc/sudoers.d/99-$NEWUSER"
 EOF
 
-
-echo "#################################################"
-echo "#  INSTALL COMPLETE. POWERING OFF IN 5 SECS...  #"
-echo "#              EJECT ISO AND BOOT               #"
-echo "#################################################"
+echo "==============================================="
+echo "   INSTALL COMPLETE. REMOVE MEDIA AND REBOOT.  "
+echo "        POWERING OFF IN 5 SECONDS...           "
+echo "==============================================="
 
 sleep 5 && sudo poweroff

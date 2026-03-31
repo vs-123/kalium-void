@@ -24,11 +24,11 @@ rm ./data/splash.png &&
 yes | sudo ./mklive.sh \
 	-a $ARCH \
 	-p "$(cat ../packages.txt)"  \
+	-r ./kalium-repo/hostdir/binpkgs \
 	-S "acpid dhcpcd sshd"  \
 	-I ../kalium-iso-overlay \
 	-x ../finish_kalium_void.sh  \
 	-T "Kalium Void" \
-	-e /bin/zsh \
 	-e /bin/zsh \
 	-r "https://github.com/index-0/librewolf-void/releases/latest/download/" \
 	-o "../kalium-void-$ARCH.iso"

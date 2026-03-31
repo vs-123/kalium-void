@@ -12,18 +12,34 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: CHECKOUT KALIUM REPO
+      - name: CHECKOUT KALIUM-VOID REPO
         uses: actions/checkout@v4
 
-      - name: INSTALL DEPENDENCIES & SETUP XBPS
+      - name: CHECKOUT KALIUM-REPO REPO
+        uses: actions/checkout@v4
+        with:
+          repository: vs-123/kalium-repo
+          path: kalium-repo
+
+      - name: INSTALL DEPENDENCIES
         run: |
           sudo apt-get update
           sudo apt-get install -y qemu-user-static binfmt-support wget liblz4-tool xz-utils
 
+      - name: SETUP XBPS
+        run: |
           wget https://repo-default.voidlinux.org/static/xbps-static-latest.aarch64-musl.tar.xz
           mkdir xbps
           tar xvf xbps-static-latest.aarch64-musl.tar.xz -C xbps
           sudo cp xbps/usr/bin/xbps-* /usr/bin/
+
+      - name: BUILD CUSTOM PACKAGES (AARCH64)
+        working-directory: kalium-repo
+        run: |
+          ./xbps-src binary-bootstrap
+          ./xbps-src pkg kalium-base-files
+          ./xbps-src pkg kalium-base-systems
+          xbps-rindex -a hostdir/binpkgs/*.xbps
 
       - name: CLONE VOID-MKLIVE
         run: git clone --depth 1 https://github.com/void-linux/void-mklive.git
