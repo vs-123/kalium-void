@@ -33,12 +33,14 @@ jobs:
           tar xf xbps-static-latest.aarch64-musl.tar.xz -C xbps
           sudo cp xbps/usr/bin/xbps-* /usr/bin/
 
-      - name: BUILD CUSTOM PACKAGES (ETHEREAL MODE)
+      - name: BUILD CUSTOM PACKAGES
         working-directory: kalium-repo
         run: |
           mkdir -p etc
           echo "XBPS_CHROOT_CMD=ethereal" >> etc/conf
           echo "XBPS_ALLOW_CHROOT_BREAKOUT=yes" >> etc/conf
+
+          ln -s / masterdir
           
           ./xbps-src binary-bootstrap
           ./xbps-src pkg kalium-base-files
