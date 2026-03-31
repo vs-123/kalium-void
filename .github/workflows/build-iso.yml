@@ -8,48 +8,58 @@ on:
 
 jobs:
   build-aarch64:
-    runs-on: macos-latest
+    runs-on: ubuntu-24.04-arm
     permissions:
       contents: write
     steps:
-      - name: CHECKOUT KALIUM-VOID REPO
+      - name: CHECKOUT REPOS
         uses: actions/checkout@v4
-
-      - name: CHECKOUT KALIUM-REPO REPO
+      
+      - name: CHECKOUT KALIUM-REPO
         uses: actions/checkout@v4
         with:
           repository: vs-123/kalium-repo
           path: kalium-repo
 
-      - name: BUILD INSIDE DOCKER
+      - name: INSTALL HOST DEPENDENCIES
         run: |
-          docker run --privileged --rm \
-            -v $(pwd):/work \
-            -w /work \
-            ghcr.io/void-linux/void-linux:latest-full-aarch64 \
-            /bin/bash -c "
-              xbps-install -Sy wget git xz lz4 qemu-user-static-binfmt binfmt-support
+          sudo apt-get update
+          sudo apt-get install -y qemu-user-static binfmt-support wget liblz4-tool xz-utils
 
-              cd kalium-repo
-              ./xbps-src binary-bootstrap
-              ./xbps-src pkg kalium-base-files
-              ./xbps-src pkg kalium-base-systems
-              xbps-rindex -a hostdir/binpkgs/*.xbps
-              cd ..
+      - name: INSTALL XBPS STATIC
+        run: |
+          wget https://repo-default.voidlinux.org/static/xbps-static-latest.aarch64-musl.tar.xz
+          mkdir -p xbps
+          tar xf xbps-static-latest.aarch64-musl.tar.xz -C xbps
+          sudo cp xbps/usr/bin/xbps-* /usr/bin/
 
-              git clone --depth 1 https://github.com/void-linux/void-mklive.git
-              sed -i 's/umount -R -f/umount -l -R -f/g' ./void-mklive/mklive.sh
-              
-              bash ./build.sh aarch64
-            "
+      - name: BUILD CUSTOM PACKAGES (ETHEREAL MODE)
+        working-directory: kalium-repo
+        run: |
+          mkdir -p etc
+          echo "XBPS_CHROOT_CMD=ethereal" >> etc/conf
+          echo "XBPS_ALLOW_CHROOT_BREAKOUT=yes" >> etc/conf
+          
+          ./xbps-src binary-bootstrap
+          ./xbps-src pkg kalium-base-files
+          ./xbps-src pkg kalium-base-systems
+          xbps-rindex -a hostdir/binpkgs/*.xbps
+
+      - name: CLONE VOID-MKLIVE
+        run: git clone --depth 1 https://github.com/void-linux/void-mklive.git
+
+      - name: BUILD ISO (AARCH64)
+        run: |
+          sed -i 's/umount -R -f/umount -l -R -f/g' ./void-mklive/mklive.sh
+          sudo bash ./build.sh aarch64
 
       - name: GENERATE CHECKSUM & RENAME
         run: |
           TAG_NAME="${{ github.ref_name }}"
-          shasum -a 256 kalium-void-aarch64.iso > kalium-void-aarch64-sha256sum.txt
+          sha256sum kalium-void-aarch64.iso > kalium-void-aarch64-sha256sum.txt
           mv kalium-void-aarch64.iso "kalium-void-aarch64-${TAG_NAME}.iso"
 
-      - name: CREATE RELEASE AND UPLOAD ASSET
+      - name: CREATE RELEASE
         uses: softprops/action-gh-release@v2
         with:
           files: |
