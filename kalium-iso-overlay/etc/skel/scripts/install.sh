@@ -6,6 +6,18 @@
 
 set -e
 
+if [ -z "$BASH_VERSION" ]
+then
+	echo "[ERROR] THIS IS NOT BASH. PLEASE RUN WITH BASH."
+	exit 1
+fi
+
+if [ "$EUID" -ne 0 ]
+then
+	echo "[ERROR] YOU ARE NOT ROOT. RUN AS ROOT."
+	exit 1
+fi
+
 clear
 echo "==============================="
 echo "     KALIUM VOID INSTALLER     "
