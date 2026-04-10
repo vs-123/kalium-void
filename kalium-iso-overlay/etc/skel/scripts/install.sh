@@ -4,6 +4,8 @@
 #  KALIUM VOID INSTALLER  #
 ###########################
 
+set -e
+
 clear
 echo "==============================="
 echo "     KALIUM VOID INSTALLER     "
@@ -14,13 +16,13 @@ echo "-------------------------------------------------"
 
 read -p "[TARGET DISK (e.g., /dev/sda)]: " TARGET
 if [[ ! -b "$TARGET" ]]; then
-	echo "[ERROR] $TARGET is not a block device."
+	echo "[ERROR] $TARGET IS NOT A BLOCK DEVICE."
 	exit 1
 fi
 
 read -p "[NEW USERNAME]: " NEWUSER
 if [[ -z "$NEWUSER" ]]; then
-	echo "Error: Username cannot be empty."
+	echo "[ERROR] USERNAME CANNOT BE EMPTY."
 	exit 1
 fi
 
