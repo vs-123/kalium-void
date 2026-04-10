@@ -102,6 +102,7 @@ chroot /mnt /bin/zsh <<EOF
 	 chsh -s /bin/zsh root
 
 	 echo "kalium-void" > /etc/hostname
+	 chmod +x /usr/bin/lsb_release
 
 	 echo "=> CONFIGURING GRUB SPLASH..."
 	 sed -i '/GRUB_BACKGROUND/d' /etc/default/grub
