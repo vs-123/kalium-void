@@ -23,7 +23,7 @@ rm ./data/splash.png &&
 
 yes | sudo ./mklive.sh \
 	-I ../kalium-iso-overlay \
-	-S "acpid dbus dhcpcd sshd"  \
+	-S "acpid dbus dhcpcd sshd nix-daemon"  \
 	-T "Kalium Void" \
 	-a $ARCH \
 	-e /bin/zsh \
