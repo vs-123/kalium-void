@@ -6,12 +6,12 @@ dbus
 dejavu-fonts-ttf
 fastfetch
 feh
+firefox
 flameshot
 git
 gnupg
 grub-arm64-efi
 kitty
-librewolf
 mesa
 mesa-dri
 neovim
