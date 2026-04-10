@@ -86,7 +86,7 @@ cp /etc/resolv.conf /mnt/etc/
 
 echo "=> CONFIGURING SYSTEM..."
 chroot /mnt /bin/zsh <<EOF
-	 useradd -m -G wheel,audio,video,storage,users -s /bin/zsh "$NEWUSER"
+	 useradd -m -G wheel,audio,video,storage,users,nixbld -s /bin/zsh "$NEWUSER"
 
 	 echo "=> SETTING UP DOTFILES FOR $NEWUSER..."
 	 su $NEWUSER
@@ -99,7 +99,7 @@ chroot /mnt /bin/zsh <<EOF
 	 echo "SET PASSWORD FOR ROOT: "
 	 passwd root < /dev/tty
 
-	 chsh -s /bin/zsh
+	 chsh -s /bin/zsh root
 
 	 echo "kalium-void" > /etc/hostname
 
