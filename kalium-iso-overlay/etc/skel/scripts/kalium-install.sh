@@ -82,10 +82,6 @@ sudo chroot /mnt /bin/zsh <<EOF
     echo "=> SETTING UP DOTFILES FOR $NEWUSER..."
     sudo -u "$NEWUSER" chezmoi init --apply vs-123
 
-    echo "=> CONFIGURING GRUB & SPLASH..."
-    cp /usr/share/splash.png /boot/grub/splash.png 2>/dev/null || true
-    echo 'GRUB_BACKGROUND="/boot/grub/splash.png"' >> /etc/default/grub
-
     echo "=> SET PASSWORDS"
     echo "ENTER PASSWORD FOR $NEWUSER: "
     passwd "$NEWUSER"
@@ -94,8 +90,17 @@ sudo chroot /mnt /bin/zsh <<EOF
 
     echo "kalium-void" > /etc/hostname
     
-    echo "=> RECONFIGURING PACKAGES..."
+    echo "=> CONFIGURING GRUB SPLASH..."
+	 sed -i '/GRUB_BACKGROUND/d' /etc/default/grub
+	 mkdir -p /boot/grub
+    cp /usr/share/splash.png /boot/grub/splash.png 2>/dev/null || true
+    echo 'GRUB_BACKGROUND="/boot/grub/splash.png"' >> /etc/default/grub
+	 grub-mkconfig -o /boot/grub/grub.cfg
+
+    echo "=> GRUB INSTALL"
     grub-install --target=arm64-efi --efi-directory=/boot/efi --bootloader-id="Kalium-Void" --recheck
+
+    echo "=> RECONFIGURING PACKAGES..."
     xbps-reconfigure -fa
 
     echo "=> FINALISING SUDOERS..."
