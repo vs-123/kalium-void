@@ -16,6 +16,7 @@ image::{raw-url}/assets/kalium-void-logo.png[kalium-logo,width=75%]
 * **UNIQUE IDENTITY** {em} Distinct branding and identification separate from upstream Void Linux whilst maintaining Void Linux heritage
 * **NIX INTEGRATION** {em} Nix package manager is configured to be used
 * **PRE-INSTALLED SOFTWARE** {em} Includes `xz`, `unzip`, `firefox`, `gpg`, `git`, `neovim` and additional core utilities.
+* **TYPOGRAPHY** {em} Fonts link:https://fonts.google.com/specimen/Tinos[Tinos] and link:https://fonts.google.com/specimen/Libertinus+Mono[Libertinus Mono] are baked in
 * **DISPLAY STACK** {em} Uses X.Org/X11 display server with Openbox window manager
 * **CUSTOM BRANDING** {em} Has its own unique logo
 * **DEFAULT SHELL** {em} `zsh` is configured as the default system shell
