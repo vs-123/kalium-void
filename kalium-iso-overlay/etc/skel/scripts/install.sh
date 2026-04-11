@@ -90,7 +90,7 @@ chroot /mnt /bin/zsh <<EOF
 
 	 echo "=> SETTING UP DOTFILES FOR $NEWUSER..."
 	 su $NEWUSER
-	 chezmoi init --apply vs-123
+	 chezmoi init --apply vs-123 < /dev/tty
 	 exit
 
 	 echo "=> SET PASSWORDS"
@@ -100,6 +100,9 @@ chroot /mnt /bin/zsh <<EOF
 	 passwd root < /dev/tty
 
 	 chsh -s /bin/zsh root
+	 su $NEWUSER
+	 sudo xbps-install -Syu kalium-base-files < /dev/tty
+	 exit
 
 	 echo "kalium-void" > /etc/hostname
 	 chmod +x /usr/bin/lsb_release

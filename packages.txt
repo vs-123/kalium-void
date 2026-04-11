@@ -1,5 +1,6 @@
 base-system
 bc
+binutils
 btop
 chezmoi
 dbus
@@ -22,6 +23,7 @@ picom
 rofi
 rsync
 ssr
+strace
 unzip
 wget
 xclip

@@ -4,7 +4,6 @@ if [ -z "$1" ]; then
 	echo "[USAGE] $0 <ARCHITECTURE> (E.G., X86_64 OR AARCH64)"
 	exit 1
 fi
-
 ARCH=$1
 
 if [ ! -d "void-mklive" ]
@@ -25,12 +24,14 @@ yes | sudo ./mklive.sh \
 	-I ../kalium-iso-overlay \
 	-S "acpid dbus dhcpcd sshd nix-daemon"  \
 	-T "Kalium Void" \
+	-C "live.shell=/bin/zsh" \
 	-a $ARCH \
 	-e /bin/zsh \
 	-o "../kalium-void-$ARCH.iso" \
 	-p "$(cat ../packages.txt)"  \
-	-r ./kalium-repo/hostdir/binpkgs \
+	-r "https://github.com/vs-123/kalium-packages/releases/latest/download" \
 	-x ../finish_kalium_void.sh  
+	#-r ./kalium-repo/hostdir/binpkgs 
 
 
 
