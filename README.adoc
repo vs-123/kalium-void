@@ -132,6 +132,22 @@ umount -R /mnt
 
 * *THE END*
 
+== LORE
+
+Kalium Void was not born out of a desire to create yet another distro, it was born out of a cycle of persistent frustration and a pursuit of frictionless installation.
+
+For a long time, the standard procedure for installing setting up Void Linux involved a repetitive, mundane task {em} performing a chroot installation , followed by the repetitive task of installing a specific set of core packages, manually configuring the window manager, and fighting with system defaults. Although I usually prefer chroot installation over void-installer, this remains the same both ways, i.e. the volume of manual intervention required to reach a functional, personalised state became quite annoying.
+
+My first attempt to mitigate this was writing a basic `install.sh` script. It wasn't designed to install the OS itself, but rather it was to automate the post-installation phase. Its only job was to pull in my favourite packages and change my default shell. While this helped, it quickly revealed a new bottleneck {em} dotfile management.
+
+I initially tried bundling my dots into a directory right next to my script and rewrote `install.sh` to copy them to their appropriate places, however this manual management grew too complex and became quite brittle to maintain. I eventually discovered `chezmoi`. My installation procedure had now simplified to just: manual chroot install, run `install.sh` and finally `chezmoi`.
+
+Despite these improvements, the initial installation remained a chore to me. I wished to automate the chroot process as well, for which I wrote a secondary script, but it introduced its own irony {em} I'd have to manually install git and clone the repository onto the live ISO just to begin the "automated" process. The workflow had become yet another multi-step chain: boot, install git, clone, run script, reboot, run install script, and finally run chezmoi.
+
+All I wanted was my Void Linux to be ready the moment the live media booted. I finally gave up on scripts and dived into the internals of Void Linux's build tools. As I learnt more, my goal had shifted from writing the best script to was to baking my environment directly into the installation media. 
+
+After extensive research, iteration and lots of trial and error, I managed to build a custom image that moved the logic of the install.sh script directly into the system's base layer. This had transformed my installation workflow into a more streamlined procedure: boot the live image, do chroot installation and apply configurations. From that point on, Kalium Void has continued evolving to what it is right now.
+
 == MORE INFORMATION
 
 *Kalium Void* is a personal distribution engineered and tailored specifically to cater to my own preferences and configurations. As a result, it is not recommended for general use since the design choices, baked-in packages and system defaults are optimised for my specific workflow rather than broad compatibility or standard user expectations. Those who remain curious however are free to install and experiment with the system at their own risk.
