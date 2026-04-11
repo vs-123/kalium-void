@@ -9,15 +9,16 @@
 
 == FEATURES
 
-* **INDEPENDENT REPOSITORY** {em} Utilises `kalium-packages` in conjunction with official Void Linux repositories for certain core components
-* **MODIFIED BASE** {em} Utilises `kalium-base-files` in place of standard `base-files`.
-* **UNIQUE IDENTITY** {em} Distinct branding and identification separate from upstream Void Linux whilst being Void Linux in its core.
+* **HYBRID REPOSITORY** {em} Utilises `kalium-packages` for certain core components in conjunction with official Void Linux repositories
+* **MODIFIED BASE** {em} Utilises `kalium-base-files` in place of standard `base-files`
+* **UNIQUE IDENTITY** {em} Distinct branding and identification separate from upstream Void Linux whilst maintaining Void Linux heritage
+* **NIX INTEGRATION** {em} Nix package manager is configured to be used
 * **PRE-INSTALLED SOFTWARE** {em} Includes `xz`, `unzip`, `firefox`, `gpg`, `git`, `neovim` and additional core utilities.
-* **DISPLAY STACK** {em} Uses X.Org/X11 display server with Openbox window manager.
-* **CUSTOM BRANDING** {em} Has its own unique logo.
-* **DEFAULT SHELL** {em} `zsh` is configured as the default system shell.
-* **BOOTLOADER** {em} GRUB is utilised by default.
-* **GUIDED INSTALLATION** {em} An installer script is included for system configuration and automated dotfile deployment with `chezmoi`.
+* **DISPLAY STACK** {em} Uses X.Org/X11 display server with Openbox window manager
+* **CUSTOM BRANDING** {em} Has its own unique logo
+* **DEFAULT SHELL** {em} `zsh` is configured as the default system shell
+* **BOOTLOADER** {em} GRUB is utilised by default
+* **GUIDED INSTALLATION** {em} An installer script is included for system configuration and automated dotfile deployment with `chezmoi`
 
 == HOW TO INSTALL
 
