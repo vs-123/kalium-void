@@ -132,7 +132,7 @@ umount -R /mnt
 
 * *THE END*
 
-== LORE
+== ORIGIN
 
 *Kalium Void* was not born out of a desire to create yet another distro, it was born out of a cycle of persistent frustration and a pursuit of frictionless installation.
 
