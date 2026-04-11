@@ -1,3 +1,4 @@
+aria2
 base-system
 bc
 binutils
@@ -25,7 +26,6 @@ rsync
 ssr
 strace
 unzip
-wget
 xclip
 xorg-minimal
 xrandr
