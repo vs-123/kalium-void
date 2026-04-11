@@ -134,9 +134,9 @@ umount -R /mnt
 
 == LORE
 
-Kalium Void was not born out of a desire to create yet another distro, it was born out of a cycle of persistent frustration and a pursuit of frictionless installation.
+*Kalium Void* was not born out of a desire to create yet another distro, it was born out of a cycle of persistent frustration and a pursuit of frictionless installation.
 
-For a long time, the standard procedure for installing setting up Void Linux involved a repetitive, mundane task {em} performing a chroot installation , followed by the repetitive task of installing a specific set of core packages, manually configuring the window manager, and fighting with system defaults. Although I usually prefer chroot installation over void-installer, this remains the same both ways, i.e. the volume of manual intervention required to reach a functional, personalised state became quite annoying.
+For a long time, my standard procedure for installing setting up Void Linux involved a repetitive, mundane task {em} performing a chroot installation followed by the repetitive task of installing a specific set of core packages, manually configuring the window manager, and fighting with system defaults. Although I usually prefer chroot installation over void-installer, this remains the same both ways, i.e. the volume of manual intervention required to reach a functional, personalised state became quite annoying.
 
 My first attempt to mitigate this was writing a basic `install.sh` script. It wasn't designed to install the OS itself, but rather it was to automate the post-installation phase. Its only job was to pull in my favourite packages and change my default shell. While this helped, it quickly revealed a new bottleneck {em} dotfile management.
 
@@ -147,6 +147,18 @@ Despite these improvements, the initial installation remained a chore to me. I w
 All I wanted was my Void Linux to be ready the moment the live media booted. I finally gave up on scripts and dived into the internals of Void Linux's build tools. As I learnt more, my goal had shifted from writing the best script to was to baking my environment directly into the installation media. 
 
 After extensive research, iteration and lots of trial and error, I managed to build a custom image that moved the logic of the install.sh script directly into the system's base layer. This had transformed my installation workflow into a more streamlined procedure: boot the live image, do chroot installation and apply configurations. From that point on, Kalium Void has continued evolving to what it is right now.
+
+With the technical hurdles cleared, I had a new ambition in mind {em} identity. I started with aesthetic changes {em} basically a custom ASCII logo for `fastfetch` (that is the origin of the current logo) and minor tweaks to system banners. But of course those were surface-level changes, it wasn't enough for me to call it its own thing.
+
+Thus to truly separate the identity of the system from its heritage, I dived a bit deeper into the core internals. This had led me to the creation of the link:https://github.com/vs-123/kalium-packages[kalium-packages] repository, which includes certain core components including `kalium-base-files`, which replaces Void's `base-files` and more. This allowed the system to identify as Kalium Void at a fundamental level.
+
+Thus, Kalium Void includes two repositories by default -- its own 'kalium-packages' repo, and the official Void repositories. 
+
+I now wished to address another key limitation of Void Linux (and Kalium Void) {em} package availability.
+
+Although Void's official repositories are robust, I still wished for a way to obtain packages which even Void's repository did not support. Instead of fighting with XBPS templates for every utility and package in mind, I decided to setup and integrate the `nix` package manager directly into the installation.
+
+Thus, Kalium Void now balances two repositories {em} Kalium and Void {em} and two package managers {em} XBPS and Nix.
 
 == MORE INFORMATION
 
