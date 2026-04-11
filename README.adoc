@@ -1,11 +1,11 @@
 :em: {sp}--{sp}
 :license: GNU Affero General Public License version 3.0 or later
 :license-link: link:https://www.gnu.org/licenses/agpl-3.0.en.html[]
-:raw-url: https://raw.githubusercontent.com/vs-123/cchat/refs/heads/au
+:raw-url: https://raw.githubusercontent.com/vs-123/kalium-void/refs/heads/main
 
 = KALIUM VOID
 
-My personal Void Linux spin-off
+*Kalium Void* is my own personal spin-off of Void Linux. 
 
 == HOW TO INSTALL
 
@@ -30,8 +30,8 @@ sudo ~/scripts/kalium-installer.sh
 ----
 cfdisk
 # /dev/sda1   1G  (EFI)
-# /dev/sda2   12G (swap)
-# /dev/sda3   1G  (root partition)
+# /dev/sda2   12G (SWAP)
+# /dev/sda3   1G  (ROOT PARTITION)
 
 mkfs.vfat /dev/sda1
 mkfs.ext4 /dev/sda3
