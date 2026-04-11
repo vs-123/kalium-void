@@ -1,5 +1,10 @@
 #!/bin/bash
 
+KPKGS="
+	kalium-base-files
+	ktools
+"
+
 ###########################
 #  KALIUM VOID INSTALLER  #
 ###########################
@@ -101,7 +106,7 @@ chroot /mnt /bin/zsh <<EOF
 
 	 chsh -s /bin/zsh root
 	 su $NEWUSER
-	 sudo xbps-install -Syu kalium-base-files < /dev/tty
+	 yes | sudo xbps-install -Syu $KPKGS < /dev/tty
 	 exit
 
 	 echo "kalium-void" > /etc/hostname

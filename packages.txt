@@ -30,6 +30,5 @@ xclip
 xorg-minimal
 xrandr
 xset
-xtools
 xz
 zsh
