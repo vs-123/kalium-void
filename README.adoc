@@ -132,6 +132,12 @@ umount -R /mnt
 
 * *THE END*
 
+== MORE INFORMATION
+
+*Kalium Void* is a personal distribution engineered and tailored specifically to cater to my own preferences and configurations. As a result, it is not recommended for general use since the design choices, baked-in packages and system defaults are optimised for my specific workflow rather than broad compatibility or standard user expectations. Those who remain curious however are free to install and experiment with the system at their own risk.
+
+As this project is licensed under the *{license}*, you are also permitted to fork this repository, provided that any derivative works are distributed under a license compatible with the license. No warranty or support is provided for external installations.
+
 == LICENSE
 
 This project is licensed under the *{license}*.
